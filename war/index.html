@@ -11,21 +11,37 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="google-signin-client_id"
 	content="300612704532-ld9976ufosrjfbvfcghc4dksj27nvigu.apps.googleusercontent.com">
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<title>Hello App Engine</title>
+<script src="https://apis.google.com/js/platform.js" async defer>
+</script>
+<script>
+			var $ = function(id) {
+				return document.getElementById(id);
+			};
+			
+
+			window.onload = function() {
+
+				//on click display link
+				$("signIn").onclick = function(){ $("deleteBtn").style.display = '';}
+			};
+		</script>
+<title>Login</title>
 </head>
 
 <body>
-	<h1>Hello App Engine!</h1>
+	<h1>Login</h1>
 
 	<div class="g-signin2" data-onsuccess="onSignIn"></div>
-
+	<button type="button" class="btn btn-success" id="signIn">
+		SignIn</button>
 	<table>
 		<tr>
 			<td colspan="2" style="font-weight: bold;">Available Servlets:</td>
 		</tr>
 		<tr>
-			<td><a href="stepladder">Stepladder</a></td>
+
+			<td id="cont1" style="visibilty: hidden;"><a
+				href="view bookmarks">Stepladder</a></td>
 		</tr>
 	</table>
 </body>
