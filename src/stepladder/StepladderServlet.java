@@ -20,5 +20,7 @@ public class StepladderServlet extends HttpServlet {
 		} finally {
 			pm.close();
 		}
+		
+		resp.getWriter().println(d.getEmail() + d.getFirstName());
 	}
 }
