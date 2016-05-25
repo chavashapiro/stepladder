@@ -5,17 +5,11 @@
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
 
 <%-- //[START imports]--%>
-<<<<<<< HEAD
-<%@ page import="com.example.guestbook.Greeting"%>
-<%@ page import="com.example.guestbook.Guestbook"%>
+
+<%@ page import="com.stepLadder.Greeting"%>
+<%@ page import="com.stepLadder.Guestbook"%>
 <%@ page import="com.googlecode.objectify.Key"%>
 <%@ page import="com.googlecode.objectify.ObjectifyService"%>
-=======
-<%@ page import="com.stepLadder.Greeting" %>
-<%@ page import="com.stepLadder.Guestbook" %>
-<%@ page import="com.googlecode.objectify.Key" %>
-<%@ page import="com.googlecode.objectify.ObjectifyService" %>
->>>>>>> loginScreen
 <%-- //[END imports]--%>
 
 <%@ page import="java.util.List"%>
@@ -23,31 +17,27 @@
 
 <html>
 <head>
-<<<<<<< HEAD
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<
-<title>View BookMarks</title>
-=======
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css"/>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-<title>StepLadder</title>
->>>>>>> loginScreen
-</head>
+<title>View BookMarks</title>
+
+
+
+
+
 </head>
 
 <body>
 
-<<<<<<< HEAD
 	<%
 		String guestbookName = request.getParameter("guestbookName");
 		if (guestbookName == null) {
-			guestbookName = "default Group";
+			guestbookName = "My Home Group";
 		}
 		pageContext.setAttribute("guestbookName", guestbookName);
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
+		//Get the email address from the html and then use it to look up which groups 
+		//the user is part of - they should only be abble to accces those groups
 	%>
 
 	<%-- //[START datastore]--%>
@@ -55,39 +45,28 @@
 		// Create the correct Ancestor key
 		Key<Guestbook> theBook = Key.create(Guestbook.class, guestbookName);
 
-		// Run an ancestor query to ensure we see the most up-to-date
-		// view of the Greetings belonging to the selected Guestbook.
-		List<Greeting> greetings = ObjectifyService.ofy().load().type(Greeting.class) // We want only Greetings
-				.ancestor(theBook) // Anyone in this book
-				.order("-date") // Most recent first - date is indexed.
-				.limit(5) // Only show 5 of them.
+		// Get list of all bookmarks for current group
+		List<Greeting> greetings = ObjectifyService.ofy().load().type(Greeting.class) // only bookmarks
+				.ancestor(theBook).order("-date")
+				//.limit(15)  //we dont want limmit            
 				.list();
 
 		if (greetings.isEmpty()) {
 	%>
-	<p>Guestbook '${fn:escapeXml(guestbookName)}' has no messages.</p>
+	<p>Group ${fn:escapeXml(guestbookName)} has no bookmarks.</p>
 	<%
 		} else {
 	%>
-	<p>Messages in Guestbook '${fn:escapeXml(guestbookName)}'.</p>
+	<p>List of bookmarks for group ${fn:escapeXml(guestbookName)}.</p>
 	<%
 		// Look at all of our greetings
 			for (Greeting greeting : greetings) {
-				pageContext.setAttribute("greeting_content", greeting.content);
-				String author;
-				if (greeting.author_email == null) {
-					author = "An anonymous person";
-				} else {
-					author = greeting.author_email;
-					String author_id = greeting.author_id;
-					if (user != null && user.getUserId().equals(author_id)) {
-						author += " (You)";
-					}
-				}
-				pageContext.setAttribute("greeting_user", author);
+				pageContext.setAttribute("greeting_content", greeting.bookmarkURL);
 	%>
+	<!-- turn this into url link and maybe add title of bookmark so it will display the title 
+you need to add title to greetings class and then to singservlet has to getParameter(title) and the form in the jsp needs a title -->
 	<p>
-		<b>${fn:escapeXml(greeting_user)}</b> wrote:
+		<b>${fn:escapeXml(greeting_user)}</b>
 	</p>
 	<blockquote>${fn:escapeXml(greeting_content)}</blockquote>
 	<%
@@ -97,88 +76,25 @@
 
 	<form action="/sign" method="post">
 		<div>
-			<textarea name="content" rows="3" cols="60"></textarea>
+			<textarea name="bookmarkURL" rows="3" cols="60"></textarea>
 		</div>
 		<div>
-			<input type="submit" value="Post Greeting" />
+			<input type="submit" value="Add bookmark" />
 		</div>
 		<input type="hidden" name="guestbookName"
 			value="${fn:escapeXml(guestbookName)}" />
 	</form>
 
 	<%-- //[END datastore]--%>
-	<form action="/guestbook.jsp" method="get">
+	<form action="/bookmark.jsp" method="get">
 		<div>
 			<input type="text" name="guestbookName"
 				value="${fn:escapeXml(guestbookName)}" />
 		</div>
 		<div>
-			<input type="submit" value="Switch Guestbook" />
+			<input type="submit" value="Switch Group" />
 		</div>
 	</form>
-=======
-<%
-    String guestbookName = request.getParameter("guestbookName");
-	 if (guestbookName == null) {
-        guestbookName = "My Home Group";
-    }
-    pageContext.setAttribute("guestbookName", guestbookName);
-    //Get the email address from the html and then use it to look up which groups 
-    //the user is part of - they should only be abble to accces those groups
-    
-    
-%>
-
-<%-- //[START datastore]--%>
-<%
-	
-    // Create the correct Ancestor key
-      Key<Guestbook> theBook = Key.create(Guestbook.class, guestbookName);
-
-    
-    // Get list of all bookmarks for current group
-      List<Greeting> greetings = ObjectifyService.ofy()
-          .load()
-          .type(Greeting.class) // only bookmarks
-          .ancestor(theBook)    
-          .order("-date")       
-          //.limit(15)  //we dont want limmit            
-          .list();
-
-    if (greetings.isEmpty()) {
-%>
-<p>Group ${fn:escapeXml(guestbookName)} has no bookmarks.</p>
-<%
-    } else {
-%>
-<p>List of bookmarks for group ${fn:escapeXml(guestbookName)}.</p>
-<%
-      // Look at all of our greetings
-        for (Greeting greeting : greetings) {
-            pageContext.setAttribute("greeting_content", greeting.bookmarkURL);
-                       
-%>
-<!-- turn this into url link and maybe add title of bookmark so it will display the title 
-you need to add title to greetings class and then to singservlet has to getParameter(title) and the form in the jsp needs a title -->
-<p><b>${fn:escapeXml(greeting_user)}</b> </p>   
-<blockquote>${fn:escapeXml(greeting_content)}</blockquote>
-<%
-        }
-    }
-%>
-
-<form action="/sign" method="post">
-    <div><textarea name="bookmarkURL" rows="3" cols="60"></textarea></div>
-    <div><input type="submit" value="Add bookmark"/></div>
-    <input type="hidden" name="guestbookName" value="${fn:escapeXml(guestbookName)}"/>
-</form>
-
-<%-- //[END datastore]--%>
-<form action="/bookmark.jsp" method="get">
-    <div><input type="text" name="guestbookName" value="${fn:escapeXml(guestbookName)}"/></div>
-    <div><input type="submit" value="Switch Group"/></div>
-</form>
->>>>>>> loginScreen
 
 </body>
 </html>

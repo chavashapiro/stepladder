@@ -22,7 +22,8 @@
 		function onSignIn(googleUser) {
 			var profile = googleUser.getBasicProfile();
 			alert("Welcome " + profile.getName());
-			window.location = '/bookmark.jsp'; /* console.log("ID: " + profile.getId()); 
+			window.location.href = '/bookmark.jsp'; 
+			/* console.log("ID: " + profile.getId());*/ 
 			
 		};
 	</script>
