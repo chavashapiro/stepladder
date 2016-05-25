@@ -1,2 +1,4 @@
-main\java\com\example\guestbook\Bookmark.class
 main\java\com\example\guestbook\Group.class
+main\java\com\example\guestbook\Bookmark.class
+main\java\com\example\guestbook\OfyHelper.class
+main\java\com\example\guestbook\SignGuestbookServlet.class
