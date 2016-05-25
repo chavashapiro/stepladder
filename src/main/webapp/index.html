@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
+<!-- above set at the top of the file will set     -->
+<!-- the browser's rendering engine into           -->
+<!-- "Quirks Mode". Replacing this declaration     -->
+<!-- with a "Standards Mode" doctype is supported, -->
+<!-- but may lead to some differences in layout.   -->
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="google-signin-client_id"
+	content="300612704532-ld9976ufosrjfbvfcghc4dksj27nvigu.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer>
+	function onSuccess(googleUser) {
+
+		//open the jsp guestbook.jsp
+		window.location = '/guestbook.jsp';
+		$("cont1").style.display = '';
+		alert('Logged in as: ' + googleUser.getBasicProfile().getName());
+	}
+	function onSignIn(googleUser) {
+		alert("signed in");
+	}
+
+	function onFailure(error) {
+		alert(error);
+	}
+	function renderButton() {
+		gapi.signin2.render('my-signin2', {
+			'scope' : 'profile email',
+			'width' : 240,
+			'height' : 50,
+			'longtitle' : true,
+			'theme' : 'dark',
+			'onsuccess' : onSuccess,
+			'onfailure' : onFailure
+		});
+	}
+</script>
+<script>
+	var $ = function(id) {
+		return document.getElementById(id);
+	};
+
+	window.onload = function() {
+
+		//on click display link
+
+		$("signInBtn").onclick = function() {
+			//$("cont1").style.display = '';
+			window.location = '/guestbook.jsp';
+		}
+		auth2 = gapi.auth2.init();
+		auth2.attachClickHandler('signinButton', additionalParams, onSignIn,
+				onSignInFailure);
+	};
+</script>
+<title>Login</title>
+</head>
+
+<body>
+	<h1>Login</h1>
+
+	<div id="signInBtn" class="g-signin2" data-onsuccess='onSignIn'
+		data-onfailure='onSignInFailure'></div>
+
+	<table>
+
+		<tr>
+
+			<td id="
+		cont1" style="display: none;"><a
+				href="view bookmarks">Stepladder</a></td>
+		</tr>
+	</table>
+</body>
+</html>
