@@ -5,8 +5,8 @@
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 
 <%-- //[START imports]--%>
-<%@ page import="com.example.guestbook.Greeting" %>
-<%@ page import="com.example.guestbook.Guestbook" %>
+<%@ page import="com.stepLadder.Greeting" %>
+<%@ page import="com.stepLadder.Guestbook" %>
 <%@ page import="com.googlecode.objectify.Key" %>
 <%@ page import="com.googlecode.objectify.ObjectifyService" %>
 <%-- //[END imports]--%>
@@ -18,51 +18,8 @@
 <head>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta name="google-signin-client_id"
-	content="300612704532-ld9976ufosrjfbvfcghc4dksj27nvigu.apps.googleusercontent.com">
-<script src="https://apis.google.com/js/platform.js" async defer>
-	function onSuccess(googleUser) {
-		$("cont1").style.display = '';
-		alert('Logged in as: ' + googleUser.getBasicProfile().getName());
-	}
-	function onSignIn(googleUser) {
-		alert("signed in");
-	}
 
-	function onFailure(error) {
-		alert(error);
-	}
-	function renderButton() {
-		gapi.signin2.render('my-signin2', {
-			'scope' : 'profile email',
-			'width' : 240,
-			'height' : 50,
-			'longtitle' : true,
-			'theme' : 'dark',
-			'onsuccess' : onSuccess,
-			'onfailure' : onFailure
-		});
-	}
-</script>
-<script>
-	var $ = function(id) {
-		return document.getElementById(id);
-	};
-
-	window.onload = function() {
-
-		//on click display link
-
-		$("signInBtn").onclick = function() {
-			$("cont1").style.display = '';
-
-		}
-		auth2 = gapi.auth2.init();
-		auth2.attachClickHandler('signinButton', additionalParams, onSignIn,
-				onSignInFailure);
-	};
-</script>
-<title>Login</title>
+<title>StepLadder</title>
 </head>
 </head>
 
@@ -70,68 +27,48 @@
 
 <%
     String guestbookName = request.getParameter("guestbookName");
-    if (guestbookName == null) {
-        guestbookName = "default";
+	 if (guestbookName == null) {
+        guestbookName = "My Home Group";
     }
     pageContext.setAttribute("guestbookName", guestbookName);
-    UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
-    if (user != null) {
-        pageContext.setAttribute("user", user);
-%>
-<div id="signInBtn" class="g-signin2" data-onsuccess='onSignIn'
-		data-onfailure='onSignInFailure'></div>
-<p>Hello, ${fn:escapeXml(user.nickname)}! (You can
-    <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
-<%
-    } else {
-%>
-<p>Hello!
-    <a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
-    to include your name with greetings you post.</p>
-<%
-    }
+    //Get the email address from the html and then use it to look up which groups 
+    //the user is part of - they should only be abble to accces those groups
+    
+    
 %>
 
 <%-- //[START datastore]--%>
 <%
+	
     // Create the correct Ancestor key
       Key<Guestbook> theBook = Key.create(Guestbook.class, guestbookName);
 
-    // Run an ancestor query to ensure we see the most up-to-date
-    // view of the Greetings belonging to the selected Guestbook.
+    
+    // Get list of all bookmarks for current group
       List<Greeting> greetings = ObjectifyService.ofy()
           .load()
-          .type(Greeting.class) // We want only Greetings
-          .ancestor(theBook)    // Anyone in this book
-          .order("-date")       // Most recent first - date is indexed.
-          .limit(5)             // Only show 5 of them.
+          .type(Greeting.class) // only bookmarks
+          .ancestor(theBook)    
+          .order("-date")       
+          //.limit(15)  //we dont want limmit            
           .list();
 
     if (greetings.isEmpty()) {
 %>
-<p>Guestbook '${fn:escapeXml(guestbookName)}' has no messages.</p>
+<p>Group ${fn:escapeXml(guestbookName)} has no bookmarks.</p>
 <%
     } else {
 %>
-<p>Messages in Guestbook '${fn:escapeXml(guestbookName)}'.</p>
+<p>List of bookmarks for group ${fn:escapeXml(guestbookName)}.</p>
 <%
       // Look at all of our greetings
         for (Greeting greeting : greetings) {
-            pageContext.setAttribute("greeting_content", greeting.content);
-            String author;
-            if (greeting.author_email == null) {
-                author = "An anonymous person";
-            } else {
-                author = greeting.author_email;
-                String author_id = greeting.author_id;
-                if (user != null && user.getUserId().equals(author_id)) {
-                    author += " (You)";
-                }
-            }
-            pageContext.setAttribute("greeting_user", author);
+            pageContext.setAttribute("greeting_content", greeting.bookmarkURL);
+                       
 %>
-<p><b>${fn:escapeXml(greeting_user)}</b> wrote:</p>
+<!-- turn this into url link and maybe add title of bookmark so it will display the title 
+you need to add title to greetings class and then to singservlet has to getParameter(title) and the form in the jsp needs a title -->
+<p><b>${fn:escapeXml(greeting_user)}</b> </p>   
 <blockquote>${fn:escapeXml(greeting_content)}</blockquote>
 <%
         }
@@ -139,15 +76,15 @@
 %>
 
 <form action="/sign" method="post">
-    <div><textarea name="content" rows="3" cols="60"></textarea></div>
-    <div><input type="submit" value="Post Greeting"/></div>
+    <div><textarea name="bookmarkURL" rows="3" cols="60"></textarea></div>
+    <div><input type="submit" value="Add bookmark"/></div>
     <input type="hidden" name="guestbookName" value="${fn:escapeXml(guestbookName)}"/>
 </form>
 
 <%-- //[END datastore]--%>
-<form action="/guestbook.jsp" method="get">
+<form action="/bookmark.jsp" method="get">
     <div><input type="text" name="guestbookName" value="${fn:escapeXml(guestbookName)}"/></div>
-    <div><input type="submit" value="Switch Guestbook"/></div>
+    <div><input type="submit" value="Switch Group"/></div>
 </form>
 
 </body>
