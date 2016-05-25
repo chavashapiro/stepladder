@@ -1,154 +1,106 @@
 <%-- //[START all]--%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.google.appengine.api.users.User" %>
-<%@ page import="com.google.appengine.api.users.UserService" %>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page import="com.google.appengine.api.users.User"%>
+<%@ page import="com.google.appengine.api.users.UserService"%>
+<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
 
 <%-- //[START imports]--%>
-<%@ page import="com.example.guestbook.Greeting" %>
-<%@ page import="com.example.guestbook.Guestbook" %>
-<%@ page import="com.googlecode.objectify.Key" %>
-<%@ page import="com.googlecode.objectify.ObjectifyService" %>
+<%@ page import="com.example.guestbook.Greeting"%>
+<%@ page import="com.example.guestbook.Guestbook"%>
+<%@ page import="com.googlecode.objectify.Key"%>
+<%@ page import="com.googlecode.objectify.ObjectifyService"%>
 <%-- //[END imports]--%>
 
-<%@ page import="java.util.List" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="java.util.List"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css"/>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta name="google-signin-client_id"
-	content="300612704532-ld9976ufosrjfbvfcghc4dksj27nvigu.apps.googleusercontent.com">
-<script src="https://apis.google.com/js/platform.js" async defer>
-	function onSuccess(googleUser) {
-		$("cont1").style.display = '';
-		alert('Logged in as: ' + googleUser.getBasicProfile().getName());
-	}
-	function onSignIn(googleUser) {
-		alert("signed in");
-	}
-
-	function onFailure(error) {
-		alert(error);
-	}
-	function renderButton() {
-		gapi.signin2.render('my-signin2', {
-			'scope' : 'profile email',
-			'width' : 240,
-			'height' : 50,
-			'longtitle' : true,
-			'theme' : 'dark',
-			'onsuccess' : onSuccess,
-			'onfailure' : onFailure
-		});
-	}
-</script>
-<script>
-	var $ = function(id) {
-		return document.getElementById(id);
-	};
-
-	window.onload = function() {
-
-		//on click display link
-
-		$("signInBtn").onclick = function() {
-			$("cont1").style.display = '';
-
-		}
-		auth2 = gapi.auth2.init();
-		auth2.attachClickHandler('signinButton', additionalParams, onSignIn,
-				onSignInFailure);
-	};
-</script>
-<title>Login</title>
+<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<
+<title>View BookMarks</title>
 </head>
 </head>
 
 <body>
 
-<%
-    String guestbookName = request.getParameter("guestbookName");
-    if (guestbookName == null) {
-        guestbookName = "default";
-    }
-    pageContext.setAttribute("guestbookName", guestbookName);
-    UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
-    if (user != null) {
-        pageContext.setAttribute("user", user);
-%>
-<div id="signInBtn" class="g-signin2" data-onsuccess='onSignIn'
-		data-onfailure='onSignInFailure'></div>
-<p>Hello, ${fn:escapeXml(user.nickname)}! (You can
-    <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
-<%
-    } else {
-%>
-<p>Hello!
-    <a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
-    to include your name with greetings you post.</p>
-<%
-    }
-%>
+	<%
+		String guestbookName = request.getParameter("guestbookName");
+		if (guestbookName == null) {
+			guestbookName = "default Group";
+		}
+		pageContext.setAttribute("guestbookName", guestbookName);
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+	%>
 
-<%-- //[START datastore]--%>
-<%
-    // Create the correct Ancestor key
-      Key<Guestbook> theBook = Key.create(Guestbook.class, guestbookName);
+	<%-- //[START datastore]--%>
+	<%
+		// Create the correct Ancestor key
+		Key<Guestbook> theBook = Key.create(Guestbook.class, guestbookName);
 
-    // Run an ancestor query to ensure we see the most up-to-date
-    // view of the Greetings belonging to the selected Guestbook.
-      List<Greeting> greetings = ObjectifyService.ofy()
-          .load()
-          .type(Greeting.class) // We want only Greetings
-          .ancestor(theBook)    // Anyone in this book
-          .order("-date")       // Most recent first - date is indexed.
-          .limit(5)             // Only show 5 of them.
-          .list();
+		// Run an ancestor query to ensure we see the most up-to-date
+		// view of the Greetings belonging to the selected Guestbook.
+		List<Greeting> greetings = ObjectifyService.ofy().load().type(Greeting.class) // We want only Greetings
+				.ancestor(theBook) // Anyone in this book
+				.order("-date") // Most recent first - date is indexed.
+				.limit(5) // Only show 5 of them.
+				.list();
 
-    if (greetings.isEmpty()) {
-%>
-<p>Guestbook '${fn:escapeXml(guestbookName)}' has no messages.</p>
-<%
-    } else {
-%>
-<p>Messages in Guestbook '${fn:escapeXml(guestbookName)}'.</p>
-<%
-      // Look at all of our greetings
-        for (Greeting greeting : greetings) {
-            pageContext.setAttribute("greeting_content", greeting.content);
-            String author;
-            if (greeting.author_email == null) {
-                author = "An anonymous person";
-            } else {
-                author = greeting.author_email;
-                String author_id = greeting.author_id;
-                if (user != null && user.getUserId().equals(author_id)) {
-                    author += " (You)";
-                }
-            }
-            pageContext.setAttribute("greeting_user", author);
-%>
-<p><b>${fn:escapeXml(greeting_user)}</b> wrote:</p>
-<blockquote>${fn:escapeXml(greeting_content)}</blockquote>
-<%
-        }
-    }
-%>
+		if (greetings.isEmpty()) {
+	%>
+	<p>Guestbook '${fn:escapeXml(guestbookName)}' has no messages.</p>
+	<%
+		} else {
+	%>
+	<p>Messages in Guestbook '${fn:escapeXml(guestbookName)}'.</p>
+	<%
+		// Look at all of our greetings
+			for (Greeting greeting : greetings) {
+				pageContext.setAttribute("greeting_content", greeting.content);
+				String author;
+				if (greeting.author_email == null) {
+					author = "An anonymous person";
+				} else {
+					author = greeting.author_email;
+					String author_id = greeting.author_id;
+					if (user != null && user.getUserId().equals(author_id)) {
+						author += " (You)";
+					}
+				}
+				pageContext.setAttribute("greeting_user", author);
+	%>
+	<p>
+		<b>${fn:escapeXml(greeting_user)}</b> wrote:
+	</p>
+	<blockquote>${fn:escapeXml(greeting_content)}</blockquote>
+	<%
+		}
+		}
+	%>
 
-<form action="/sign" method="post">
-    <div><textarea name="content" rows="3" cols="60"></textarea></div>
-    <div><input type="submit" value="Post Greeting"/></div>
-    <input type="hidden" name="guestbookName" value="${fn:escapeXml(guestbookName)}"/>
-</form>
+	<form action="/sign" method="post">
+		<div>
+			<textarea name="content" rows="3" cols="60"></textarea>
+		</div>
+		<div>
+			<input type="submit" value="Post Greeting" />
+		</div>
+		<input type="hidden" name="guestbookName"
+			value="${fn:escapeXml(guestbookName)}" />
+	</form>
 
-<%-- //[END datastore]--%>
-<form action="/guestbook.jsp" method="get">
-    <div><input type="text" name="guestbookName" value="${fn:escapeXml(guestbookName)}"/></div>
-    <div><input type="submit" value="Switch Guestbook"/></div>
-</form>
+	<%-- //[END datastore]--%>
+	<form action="/guestbook.jsp" method="get">
+		<div>
+			<input type="text" name="guestbookName"
+				value="${fn:escapeXml(guestbookName)}" />
+		</div>
+		<div>
+			<input type="submit" value="Switch Guestbook" />
+		</div>
+	</form>
 
 </body>
 </html>
