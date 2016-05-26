@@ -6,7 +6,7 @@
 
 <%-- //[START imports]--%>
 
-<%@ page import="com.stepLadder.Greeting"%>
+<%@ page import="com.stepLadder.Bookmark"%>
 <%@ page import="com.stepLadder.Guestbook"%>
 <%@ page import="com.googlecode.objectify.Key"%>
 <%@ page import="com.googlecode.objectify.ObjectifyService"%>
@@ -42,12 +42,12 @@
 		Key<Guestbook> theBook = Key.create(Guestbook.class, guestbookName);
 
 		// Get list of all bookmarks for current group
-		List<Greeting> greetings = ObjectifyService.ofy().load().type(Greeting.class) // only bookmarks
+		List<Bookmark> bookmarks = ObjectifyService.ofy().load().type(Bookmark.class) // only bookmarks
 				.ancestor(theBook).order("-date")
 				//.limit(15)  //we dont want limmit            
 				.list();
 
-		if (greetings.isEmpty()) {
+		if (bookmarks.isEmpty()) {
 	%>
 	<p>Group ${fn:escapeXml(guestbookName)} has no bookmarks.</p>
 	<%
@@ -55,10 +55,10 @@
 	%>
 	<p>List of bookmarks for group ${fn:escapeXml(guestbookName)}.</p>
 	<%
-		// Look at all of our greetings
-			for (Greeting greeting : greetings) {
-				pageContext.setAttribute("bookmark_title", greeting.bookmarkTitle);
-				pageContext.setAttribute("bookmark_url", greeting.bookmarkURL);
+		// Look at all of our bookmarks
+			for (Bookmark bookmark : bookmarks) {
+				pageContext.setAttribute("bookmark_title", bookmark.bookmarkTitle);
+				pageContext.setAttribute("bookmark_url", bookmark.bookmarkURL);
 	%>
 	<!-- turn this into url link and maybe add title of bookmark so it will display the title 
 you need to add title to greetings class and then to singservlet has to getParameter(title) and the form in the jsp needs a title -->

@@ -10,7 +10,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
 @Entity
-public class Greeting {
+public class Bookmark {
 	@Parent
 	Key<Guestbook> aGroup;
 	@Id
@@ -27,7 +27,7 @@ public class Greeting {
 	 * 
 	 * /** A convenience constructor
 	 **/
-	public Greeting(String groupID, String bookmarkTitle, String bookmarkURL) {
+	public Bookmark(String groupID, String bookmarkTitle, String bookmarkURL) {
 
 		aGroup = Key.create(Guestbook.class, groupID); // Creating the Ancestor
 														// key
@@ -36,7 +36,7 @@ public class Greeting {
 		this.bookmarkURL = "http://" + bookmarkURL;
 	}
 
-	public Greeting() {
+	public Bookmark() {
 
 	}
 
