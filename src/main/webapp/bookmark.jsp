@@ -10,6 +10,7 @@
 <%@ page import="com.stepLadder.Guestbook"%>
 <%@ page import="com.googlecode.objectify.Key"%>
 <%@ page import="com.googlecode.objectify.ObjectifyService"%>
+
 <%-- //[END imports]--%>
 
 <%@ page import="java.util.List"%>
@@ -19,12 +20,7 @@
 <head>
 <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<
 <title>View BookMarks</title>
-
-
-
-
 
 </head>
 
@@ -99,6 +95,7 @@ you need to add title to greetings class and then to singservlet has to getParam
 			<input type="submit" value="Switch Group" />
 		</div>
 	</form>
+
 
 </body>
 </html>

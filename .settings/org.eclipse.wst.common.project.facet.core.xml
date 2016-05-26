@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
   <runtime name="Google App Engine 1.9.22"/>
+<<<<<<< HEAD
+=======
+  <fixed facet="wst.jsdt.web"/>
+>>>>>>> 8b4dbf70af62779eba966ba4b3ab53d3363ce801
   <installed facet="java" version="1.7"/>
   <installed facet="jst.web" version="2.5"/>
   <installed facet="com.google.appengine.facet" version="1"/>
   <installed facet="jpt.jpa" version="2.1"/>
+<<<<<<< HEAD
+=======
+  <installed facet="wst.jsdt.web" version="1.0"/>
+>>>>>>> 8b4dbf70af62779eba966ba4b3ab53d3363ce801
 </faceted-project>

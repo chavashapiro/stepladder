@@ -1,7 +1,11 @@
 <root>
   <facet id="jpt.jpa">
     <node name="libprov">
+<<<<<<< HEAD
       <attribute name="provider-id" value="jpa-user-library-provider"/>
+=======
+      <attribute name="provider-id" value="com.google.appengine.eclipse.wtp.jpa.GaeLibraryProvider"/>
+>>>>>>> 8b4dbf70af62779eba966ba4b3ab53d3363ce801
     </node>
   </facet>
 </root>
