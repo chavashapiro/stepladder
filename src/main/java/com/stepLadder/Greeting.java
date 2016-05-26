@@ -33,7 +33,7 @@ public class Greeting {
 														// key
 
 		this.bookmarkTitle = bookmarkTitle;
-		this.bookmarkURL = bookmarkURL;
+		this.bookmarkURL = "http://" + bookmarkURL;
 	}
 
 	public Greeting() {
