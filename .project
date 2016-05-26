@@ -21,22 +21,38 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
+<<<<<<< HEAD
 			<name>org.eclipse.m2e.core.maven2Builder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
+=======
 			<name>org.eclipse.wst.validation.validationbuilder</name>
+>>>>>>> 6fabe5e89ec308767461d2e40bccb185038bf502
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
+<<<<<<< HEAD
+			<name>org.eclipse.wst.validation.validationbuilder</name>
+=======
 			<name>com.google.appengine.eclipse.wtp.swarm.gaeCloudEndpointsBuilder</name>
+>>>>>>> 6fabe5e89ec308767461d2e40bccb185038bf502
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
+<<<<<<< HEAD
+			<name>com.google.appengine.eclipse.wtp.swarm.gaeCloudEndpointsBuilder</name>
+=======
 			<name>com.google.appengine.eclipse.wtp.enhancerbuilder</name>
+>>>>>>> 6fabe5e89ec308767461d2e40bccb185038bf502
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+<<<<<<< HEAD
+			<name>com.google.appengine.eclipse.wtp.enhancerbuilder</name>
+=======
+			<name>org.eclipse.m2e.core.maven2Builder</name>
+>>>>>>> 6fabe5e89ec308767461d2e40bccb185038bf502
 			<arguments>
 			</arguments>
 		</buildCommand>
