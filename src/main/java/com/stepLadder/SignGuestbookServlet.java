@@ -1,18 +1,7 @@
-
 //[START all]
 package com.stepLadder;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,11 +19,13 @@ public class SignGuestbookServlet extends HttpServlet {
 
 	// Process the http POST of the form
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		Greeting greeting;
 		String groupID = req.getParameter("guestbookName");
 		String bookmarkURL = req.getParameter("bookmarkURL");
-		greeting = new Greeting(groupID, bookmarkURL);
+		String bookmarkTitle = req.getParameter("bookmarkTitle");
+		greeting = new Greeting(groupID, bookmarkTitle, bookmarkURL);
 		/*			 
 		*/
 
@@ -45,7 +36,7 @@ public class SignGuestbookServlet extends HttpServlet {
 		ObjectifyService.ofy().save().entity(greeting).now();
 
 		resp.sendRedirect("/bookmark.jsp?guestbookName=" + groupID);
-		
+
 	}
 }
 // 
