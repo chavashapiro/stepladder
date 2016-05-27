@@ -23,24 +23,31 @@ public class Bookmark {
 	@Index
 	public Date date;
 
-
-	public Bookmark(String groupID, String groupPassword, String bookmarkTitle,
-			String bookmarkURL) {
+	public Bookmark(String groupID, String groupPassword, String bookmarkTitle, String bookmarkURL) {
 
 		aGroup = Key.create(Group.class, groupID); // Creating the Ancestor
-														// key
+													// key
 		this.groupPassword = groupPassword;
 		this.bookmarkTitle = bookmarkTitle;
-		this.bookmarkURL = "http://" + bookmarkURL;
+
+		if (bookmarkURL.contains(".com") || bookmarkURL.contains(".org") || bookmarkURL.contains(".net")) {
+			if (bookmarkURL.startsWith("www.")) {
+				this.bookmarkURL = "http://" + bookmarkURL;
+			} else if (bookmarkURL.startsWith("http://www.")) {
+				this.bookmarkURL = bookmarkURL;
+			} else {
+				this.bookmarkURL = "http://www." + bookmarkURL;
+			}
+		}
 		this.faviconURL = "http://www.google.com/s2/favicons?domain_url=" + bookmarkURL;
 	}
 
 	public Bookmark() {
 
 	}
-	
-	public boolean samePassword(String code){
-		//return this.groupPassword.equals(code);
+
+	public boolean samePassword(String code) {
+		// return this.groupPassword.equals(code);
 		return "test".equals(code.trim());
 	}
 
