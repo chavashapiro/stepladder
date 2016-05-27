@@ -59,13 +59,14 @@
 			for (Bookmark bookmark : bookmarks) {
 				pageContext.setAttribute("bookmark_title", bookmark.bookmarkTitle);
 				pageContext.setAttribute("bookmark_url", bookmark.bookmarkURL);
+				pageContext.setAttribute("favicon_icon", bookmark.faviconURL);
 	%>
 	<!-- turn this into url link and maybe add title of bookmark so it will display the title 
 you need to add title to greetings class and then to singservlet has to getParameter(title) and the form in the jsp needs a title -->
 	<p>
 		<b>${fn:escapeXml(greeting_user)}</b>
 	</p>
-	<blockquote><a href="${bookmark_url}">${fn:escapeXml(bookmark_title)}</a></blockquote>
+	<blockquote><img src="${favicon_icon}"/><a href="${bookmark_url}" target="_blank">${fn:escapeXml(bookmark_title)}</a></blockquote>
 	<%
 		}
 		}

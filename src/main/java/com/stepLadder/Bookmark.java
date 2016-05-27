@@ -19,6 +19,7 @@ public class Bookmark {
 	public String bookmarkTitle;
 	public String bookmarkURL;
 	private String groupPassword;
+	public String faviconURL;
 	@Index
 	public Date date;
 
@@ -35,6 +36,7 @@ public class Bookmark {
 		this.groupPassword = groupPassword;
 		this.bookmarkTitle = bookmarkTitle;
 		this.bookmarkURL = "http://" + bookmarkURL;
+		this.faviconURL = "http://www.google.com/s2/favicons?domain_url=" + bookmarkURL;
 	}
 
 	public Bookmark() {
