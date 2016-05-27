@@ -12,13 +12,13 @@ import com.googlecode.objectify.annotation.Parent;
 @Entity
 public class Bookmark {
 	@Parent
-	Key<Guestbook> aGroup;
+	Key<Group> aGroup;
 	@Id
 	public Long id;
 
 	public String bookmarkTitle;
-
 	public String bookmarkURL;
+	private String groupPassword;
 	@Index
 	public Date date;
 
@@ -27,17 +27,22 @@ public class Bookmark {
 	 * 
 	 * /** A convenience constructor
 	 **/
-	public Bookmark(String groupID, String bookmarkTitle, String bookmarkURL) {
+	public Bookmark(String groupID, String groupPassword, String bookmarkTitle,
+			String bookmarkURL) {
 
-		aGroup = Key.create(Guestbook.class, groupID); // Creating the Ancestor
+		aGroup = Key.create(Group.class, groupID); // Creating the Ancestor
 														// key
-
+		this.groupPassword = groupPassword;
 		this.bookmarkTitle = bookmarkTitle;
 		this.bookmarkURL = "http://" + bookmarkURL;
 	}
 
 	public Bookmark() {
 
+	}
+	
+	public boolean samePassword(String code){
+		return this.groupPassword.equals(code);
 	}
 
 }

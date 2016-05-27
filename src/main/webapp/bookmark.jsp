@@ -7,7 +7,7 @@
 <%-- //[START imports]--%>
 
 <%@ page import="com.stepLadder.Bookmark"%>
-<%@ page import="com.stepLadder.Guestbook"%>
+<%@ page import="com.stepLadder.Group"%>
 <%@ page import="com.googlecode.objectify.Key"%>
 <%@ page import="com.googlecode.objectify.ObjectifyService"%>
 
@@ -39,7 +39,7 @@
 	<%-- //[START datastore]--%>
 	<%
 		// Create the correct Ancestor key
-		Key<Guestbook> theBook = Key.create(Guestbook.class, guestbookName);
+		Key<Group> theBook = Key.create(Group.class, guestbookName);
 
 		// Get list of all bookmarks for current group
 		List<Bookmark> bookmarks = ObjectifyService.ofy().load().type(Bookmark.class) // only bookmarks
@@ -71,7 +71,7 @@ you need to add title to greetings class and then to singservlet has to getParam
 		}
 	%>
 
-	<form action="/sign" method="post">
+	<form action="/add" method="post">
 		<div>
 			<textarea name="bookmarkTitle" rows="1" cols="60" placeholder="Title"></textarea>
 		</div>
@@ -86,13 +86,18 @@ you need to add title to greetings class and then to singservlet has to getParam
 	</form>
 
 	<%-- //[END datastore]--%>
-	<form action="/bookmark.jsp" method="get">
+	<form action="/bookmark.jsp" method="post">
 		<div>
 			<input type="text" name="guestbookName"
 				value="${fn:escapeXml(guestbookName)}" />
 		</div>
 		<div>
-			<input type="submit" value="Switch Group" />
+			<input type="text" name="groupPassword"
+				placeholder ="password" />
+		</div>
+		<div>
+			<input type="submit" name = "switch" value="Switch Group" />
+			<input type="submit" name = "create" value="Create New Group" />
 		</div>
 	</form>
 
