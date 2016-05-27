@@ -86,13 +86,13 @@ you need to add title to greetings class and then to singservlet has to getParam
 	</form>
 
 	<%-- //[END datastore]--%>
-	<form action="/bookmark.jsp" method="post">
+	<form action="/create" method="post">
 		<div>
 			<input type="text" name="guestbookName"
 				value="${fn:escapeXml(guestbookName)}" />
 		</div>
 		<div>
-			<input type="text" name="groupPassword"
+			<input type="text" name="groupPassword" value= "hidden"
 				placeholder ="password" />
 		</div>
 		<div>
@@ -100,6 +100,8 @@ you need to add title to greetings class and then to singservlet has to getParam
 			<input type="submit" name = "create" value="Create New Group" />
 		</div>
 	</form>
+	
+	
 
 
 </body>
