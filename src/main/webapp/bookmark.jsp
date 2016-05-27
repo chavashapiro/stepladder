@@ -29,7 +29,7 @@
 	<%
 		String guestbookName = request.getParameter("guestbookName");
 		if (guestbookName == null) {
-			guestbookName = "My Home Group";
+			guestbookName = "Home Group";
 		}
 		pageContext.setAttribute("guestbookName", guestbookName);
 		//Get the email address from the html and then use it to look up which groups 
@@ -87,18 +87,18 @@ you need to add title to greetings class and then to singservlet has to getParam
 	</form>
 
 	<%-- //[END datastore]--%>
-	<form action="/create" method="post">
+	<form action="/bookmark.jsp" method="post">
 		<div>
 			<input type="text" name="guestbookName"
 				value="${fn:escapeXml(guestbookName)}" />
 		</div>
 		<div>
-			<input type="text" name="groupPassword" value= "hidden"
+			<input type="text" name="groupPassword"
 				placeholder ="password" />
 		</div>
 		<div>
 			<input type="submit" name = "switch" value="Switch Group" />
-			<input type="submit" name = "create" value="Create New Group" />
+			<!-- <input type="submit" name = "create" value="Create New Group" /> --!>
 		</div>
 	</form>
 	
