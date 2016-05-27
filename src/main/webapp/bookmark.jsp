@@ -71,8 +71,8 @@ you need to add title to greetings class and then to singservlet has to getParam
 		}
 		}
 	%>
-
-	<form action="/add" method="post">
+<p>${param.message}</p>
+	<form action="/adddelete" method="post">
 		<div>
 			<textarea name="bookmarkTitle" rows="1" cols="60" placeholder="Title"></textarea>
 		</div>

@@ -23,12 +23,8 @@ public class Bookmark {
 	@Index
 	public Date date;
 
-	public Bookmark(String groupID, String groupPassword, String bookmarkTitle, String bookmarkURL) {
-
-		aGroup = Key.create(Group.class, groupID); // Creating the Ancestor
-													// key
-		this.groupPassword = groupPassword;
-		this.bookmarkTitle = bookmarkTitle;
+	public Bookmark(String groupID, String groupPassword, String bookmarkTitle, String bookmarkURL)
+			throws InvalidURLException {
 
 		if (bookmarkURL.contains(".com") || bookmarkURL.contains(".org") || bookmarkURL.contains(".net")) {
 			if (bookmarkURL.startsWith("www.")) {
@@ -38,7 +34,13 @@ public class Bookmark {
 			} else {
 				this.bookmarkURL = "http://www." + bookmarkURL;
 			}
+		} else {
+			throw new InvalidURLException();
 		}
+		aGroup = Key.create(Group.class, groupID); // Creating the Ancestor
+		// key
+		this.groupPassword = groupPassword;
+		this.bookmarkTitle = bookmarkTitle;
 		this.faviconURL = "http://www.google.com/s2/favicons?domain_url=" + bookmarkURL;
 	}
 
