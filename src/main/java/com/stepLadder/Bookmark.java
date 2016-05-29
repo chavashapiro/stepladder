@@ -18,18 +18,16 @@ public class Bookmark {
 
 	public String bookmarkTitle;
 	public String bookmarkURL;
-	private String groupPassword;
 	public String faviconURL;
 	@Index
 	public Date date;
 
 
-	public Bookmark(String groupID, String groupPassword, String bookmarkTitle,
+	public Bookmark(String groupID, String bookmarkTitle,
 			String bookmarkURL) {
 
 		aGroup = Key.create(Group.class, groupID); // Creating the Ancestor
 														// key
-		this.groupPassword = groupPassword;
 		this.bookmarkTitle = bookmarkTitle;
 		this.bookmarkURL = "http://" + bookmarkURL;
 		this.faviconURL = "http://www.google.com/s2/favicons?domain_url=" + bookmarkURL;
@@ -39,10 +37,7 @@ public class Bookmark {
 
 	}
 	
-	public boolean samePassword(String code){
-		//return this.groupPassword.equals(code);
-		return "test".equals(code.trim());
-	}
+	
 
 }
 //

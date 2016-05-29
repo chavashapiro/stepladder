@@ -43,8 +43,7 @@
 
 		// Get list of all bookmarks for current group
 		List<Bookmark> bookmarks = ObjectifyService.ofy().load().type(Bookmark.class) // only bookmarks
-				.ancestor(theBook).order("-date")
-				//.limit(15)  //we dont want limmit            
+				.ancestor(theBook).order("-date")			     
 				.list();
 
 		if (bookmarks.isEmpty()) {
@@ -87,7 +86,7 @@ you need to add title to greetings class and then to singservlet has to getParam
 	</form>
 
 	<%-- //[END datastore]--%>
-	<form action="/bookmark.jsp" method="post">
+	<form action="/create" method="post">
 		<div>
 			<input type="text" name="guestbookName"
 				value="${fn:escapeXml(guestbookName)}" />
@@ -96,11 +95,13 @@ you need to add title to greetings class and then to singservlet has to getParam
 			<input type="text" name="groupPassword"
 				placeholder ="password" />
 		</div>
+		
 		<div>
-			<input type="submit" name = "switch" value="Switch Group" />
-			<!-- <input type="submit" name = "create" value="Create New Group" /> --!>
+			<input type="submit" name = "act" value="Switch Group" />
+			<input type="submit" name = "act" value="Create New Group" /> 
 		</div>
 	</form>
+	
 	
 	
 

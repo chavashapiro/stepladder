@@ -19,13 +19,16 @@ public class AddBookmarkServlet extends HttpServlet {
 
 	// Process the http POST of the form
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		Bookmark bookmark;
-		String groupPassword = req.getParameter("groupPassword");
+		GroupEntity group;
 		String groupID = req.getParameter("guestbookName");
 		String bookmarkURL = req.getParameter("bookmarkURL");
 		String bookmarkTitle = req.getParameter("bookmarkTitle");
-		bookmark = new Bookmark(groupID,groupPassword, bookmarkTitle, bookmarkURL);
+		bookmark = new Bookmark(groupID, bookmarkTitle,
+				bookmarkURL);
+
 		/*			 
 		*/
 
