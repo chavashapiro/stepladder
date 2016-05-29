@@ -70,8 +70,11 @@ you need to add title to greetings class and then to singservlet has to getParam
 		}
 		}
 	%>
-<p>${param.message}</p>
+
 	<form action="/adddelete" method="post">
+
+		        <div style="color: #FF0000;">${Message}</div>
+	
 		<div>
 			<textarea name="bookmarkTitle" rows="1" cols="60" placeholder="Title"></textarea>
 		</div>
@@ -91,6 +94,8 @@ you need to add title to greetings class and then to singservlet has to getParam
 
 	<%-- //[END datastore]--%>
 	<form action="/create" method="post">
+	        <div style="color: #FF0000;">${errorMessage}</div>
+	
 		<div>
 			<input type="text" name="guestbookName"
 				value="${fn:escapeXml(guestbookName)}" />

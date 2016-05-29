@@ -2,10 +2,12 @@
 package com.stepLadder;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Iterator;
 import java.net.URLEncoder;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,20 +25,24 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 
 	// Process the http POST of the form
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException, ServletException {
 		Bookmark bookmark;
 		String bookmarkURL = req.getParameter("bookmarkURL");
 		String groupID = req.getParameter("guestbookName");
 		String bookmarkTitle = req.getParameter("bookmarkTitle");
 		String val = req.getParameter("button");
-
+		String message;
 		if (val.equals("AddBookmark")) {
 
 			try {
 				bookmark = new Bookmark(groupID, bookmarkTitle, bookmarkURL);
 				ObjectifyService.ofy().save().entity(bookmark).now();
 			} catch (InvalidURLException e) {
-				resp.sendRedirect("bookmark.jsp?message=" + URLEncoder.encode("INVALID URL", "UTF-8"));
+				message = "INVALID URL";
+				redirectToPreviousPageWithError(req, resp, message);
+				// resp.sendRedirect("bookmark.jsp?message=" +
+				// URLEncoder.encode("INVALID URL", "UTF-8"));
 				return;
 			}
 			/*			 
@@ -52,7 +58,8 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 		} else if (val.equals("DeleteBookmark")) {
 
 			Key<Group> group = Key.create(Group.class, groupID);
-			List<Bookmark> bookmarks = ObjectifyService.ofy().load().type(Bookmark.class).ancestor(group).list();
+			List<Bookmark> bookmarks = ObjectifyService.ofy().load()
+					.type(Bookmark.class).ancestor(group).list();
 			Iterator<Bookmark> iter = bookmarks.iterator();
 			boolean found = false;
 			while (iter.hasNext()) {
@@ -63,10 +70,26 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 				}
 			}
 			if (found == false) {
-				resp.sendRedirect("bookmark.jsp?message=" + URLEncoder.encode("BOOKMARK NOT FOUND", "UTF-8"));
+				message = "BOOKMARK NOT FOUND";
+				this.redirectToPreviousPageWithError(req, resp, message);
+				/*resp.sendRedirect("bookmark.jsp?message="
+						+ URLEncoder.encode("BOOKMARK NOT FOUND", "UTF-8"));*/
 				return;
 			}
 		}
+		req.getSession().removeAttribute("Message");
 		resp.sendRedirect("/bookmark.jsp?guestbookName=" + groupID);
+	}
+
+	private void redirectToPreviousPageWithError(HttpServletRequest req,
+			HttpServletResponse resp, String message) throws IOException,
+			UnsupportedEncodingException, ServletException {
+
+		// redirect to previous page and display message
+		String referer = req.getHeader("Referer");
+		// redirect to prev page
+		req.getSession().setAttribute("Message", message);
+		resp.sendRedirect(referer);
+
 	}
 }

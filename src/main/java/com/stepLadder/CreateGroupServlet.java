@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ public class CreateGroupServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+			throws IOException, ServletException {
 		GroupEntity group;
 		String groupPassword = req.getParameter("groupPassword");
 		String groupID = req.getParameter("guestbookName");
@@ -38,6 +39,7 @@ public class CreateGroupServlet extends HttpServlet {
 				// create new group
 				group = new GroupEntity(groupID, groupPassword);
 				ObjectifyService.ofy().save().entity(group).now();
+				req.getSession().removeAttribute("errorMessage");
 				resp.sendRedirect("/bookmark.jsp?guestbookName=" + groupID);
 
 			}
@@ -46,6 +48,7 @@ public class CreateGroupServlet extends HttpServlet {
 		if (act.equals("Switch Group")) {
 			// switch button was pressed
 			if (checkGroupPassword(groupID, groupPassword, groups)) {
+				req.getSession().removeAttribute("errorMessage");
 				resp.sendRedirect("/bookmark.jsp?guestbookName=" + groupID);
 
 			} else {
@@ -59,13 +62,13 @@ public class CreateGroupServlet extends HttpServlet {
 
 	private void redirectToPreviousPageWithError(HttpServletRequest req,
 			HttpServletResponse resp, String message) throws IOException,
-			UnsupportedEncodingException {
+			UnsupportedEncodingException, ServletException {
 
 		// redirect to previous page and display message
 		String referer = req.getHeader("Referer");
-		//redirect to prev page
-		//problem this brings u back to home page to dispaly error
-		resp.sendRedirect(referer + "?message=" + URLEncoder.encode(message, "UTF-8"));
+		// redirect to prev page
+		req.getSession().setAttribute("errorMessage", message);
+		resp.sendRedirect(referer);
 
 	}
 
