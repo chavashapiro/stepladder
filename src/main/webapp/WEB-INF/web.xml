@@ -5,13 +5,13 @@
 
 	<!-- [START standard_mappings] -->
 	<servlet>
-		<servlet-name>add</servlet-name>
-		<servlet-class>com.stepLadder.AddBookmarkServlet</servlet-class>
+		<servlet-name>adddelete</servlet-name>
+		<servlet-class>com.stepLadder.AddDeleteBookmarkServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>add</servlet-name>
-		<url-pattern>/add</url-pattern>
+		<servlet-name>adddelete</servlet-name>
+		<url-pattern>/adddelete</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

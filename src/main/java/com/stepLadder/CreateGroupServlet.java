@@ -63,7 +63,10 @@ public class CreateGroupServlet extends HttpServlet {
 
 		// redirect to previous page and display message
 		String referer = req.getHeader("Referer");
-		resp.sendRedirect(referer + URLEncoder.encode(message, "UTF-8"));
+		//redirect to prev page
+		//problem this brings u back to home page to dispaly error
+		resp.sendRedirect(referer + "?message=" + URLEncoder.encode(message, "UTF-8"));
+
 	}
 
 	private boolean checkIfGroupExists(String groupID, List<GroupEntity> groups) {

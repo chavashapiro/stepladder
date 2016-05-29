@@ -22,22 +22,33 @@ public class Bookmark {
 	@Index
 	public Date date;
 
+	public Bookmark(String groupID, String bookmarkTitle, String bookmarkURL)
+			throws InvalidURLException {
 
-	public Bookmark(String groupID, String bookmarkTitle,
-			String bookmarkURL) {
-
+		if (bookmarkURL.contains(".com") || bookmarkURL.contains(".org")
+				|| bookmarkURL.contains(".net")) {
+			if (bookmarkURL.startsWith("www.")) {
+				this.bookmarkURL = "http://" + bookmarkURL;
+			} else if (bookmarkURL.startsWith("http://www.")) {
+				this.bookmarkURL = bookmarkURL;
+			} else {
+				this.bookmarkURL = "http://www." + bookmarkURL;
+			}
+		} else {
+			throw new InvalidURLException();
+		}
 		aGroup = Key.create(Group.class, groupID); // Creating the Ancestor
-														// key
+		// key
+
 		this.bookmarkTitle = bookmarkTitle;
-		this.bookmarkURL = "http://" + bookmarkURL;
-		this.faviconURL = "http://www.google.com/s2/favicons?domain_url=" + bookmarkURL;
+		this.faviconURL = "http://www.google.com/s2/favicons?domain_url="
+				+ bookmarkURL;
 	}
 
 	public Bookmark() {
 
 	}
-	
-	
+
 
 }
 //

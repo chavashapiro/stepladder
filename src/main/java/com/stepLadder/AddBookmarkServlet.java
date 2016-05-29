@@ -2,6 +2,7 @@
 package com.stepLadder;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +22,18 @@ public class AddBookmarkServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		Bookmark bookmark;
+		Bookmark bookmark = null;
 		GroupEntity group;
 		String groupID = req.getParameter("guestbookName");
 		String bookmarkURL = req.getParameter("bookmarkURL");
 		String bookmarkTitle = req.getParameter("bookmarkTitle");
-		bookmark = new Bookmark(groupID, bookmarkTitle,
-				bookmarkURL);
+		try {
+			bookmark = new Bookmark(groupID, bookmarkTitle,
+					bookmarkURL);
+		} catch (InvalidURLException e) {
+			resp.sendRedirect("bookmark.jsp?message=" + URLEncoder.encode("INVALID URL", "UTF-8"));
+			return;
+		}
 
 		/*			 
 		*/
