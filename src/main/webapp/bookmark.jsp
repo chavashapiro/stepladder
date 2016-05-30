@@ -33,7 +33,7 @@
 		}
 		pageContext.setAttribute("guestbookName", guestbookName);
 		//Get the email address from the html and then use it to look up which groups 
-		//the user is part of - they should only be abble to accces those groups
+		//the user is part of - they should only be able to access those groups
 	%>
 
 	<%-- //[START datastore]--%>
