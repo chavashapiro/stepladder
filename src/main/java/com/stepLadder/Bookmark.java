@@ -37,8 +37,7 @@ public class Bookmark {
 		} else {
 			throw new InvalidURLException();
 		}
-		aGroup = Key.create(Group.class, groupID); // Creating the Ancestor
-		// key
+		aGroup = Key.create(Group.class, groupID); // Creating the Ancestor key
 
 		this.bookmarkTitle = bookmarkTitle;
 		this.faviconURL = "http://www.google.com/s2/favicons?domain_url=" + bookmarkURL;
@@ -47,6 +46,4 @@ public class Bookmark {
 	public Bookmark() {
 
 	}
-
 }
-//

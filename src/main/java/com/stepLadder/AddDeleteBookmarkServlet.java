@@ -40,12 +40,8 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 			} catch (InvalidURLException e) {
 				message = "INVALID URL";
 				redirectToPreviousPageWithError(req, resp, message);
-				// resp.sendRedirect("bookmark.jsp?message=" +
-				// URLEncoder.encode("INVALID URL", "UTF-8"));
 				return;
 			}
-			/*			 
-			*/
 
 			// Use Objectify to save the bookmark and now() is used to make the
 			// call
@@ -70,10 +66,6 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 			if (found == false) {
 				message = "BOOKMARK NOT FOUND";
 				this.redirectToPreviousPageWithError(req, resp, message);
-				/*
-				 * resp.sendRedirect("bookmark.jsp?message=" +
-				 * URLEncoder.encode("BOOKMARK NOT FOUND", "UTF-8"));
-				 */
 				return;
 			}
 		}
@@ -89,6 +81,5 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 		// redirect to prev page
 		req.getSession().setAttribute("Message", message);
 		resp.sendRedirect(referer);
-
 	}
 }

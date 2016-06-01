@@ -14,62 +14,49 @@ import com.googlecode.objectify.ObjectifyService;
 
 public class CreateGroupServlet extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException, ServletException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		GroupEntity group;
 		String groupPassword = req.getParameter("groupPassword");
 		String groupID = req.getParameter("guestbookName");
 		String act = req.getParameter("act");
-		List<GroupEntity> groups = ObjectifyService.ofy().load()
-				.type(GroupEntity.class).list();
+		List<GroupEntity> groups = ObjectifyService.ofy().load().type(GroupEntity.class).list();
 		String message;
 		if (act.equals("Create New Group")) {
 			// create button was pressed
 			if (checkIfGroupExists(groupID, groups)) {
 				message = "group already exists";
 				redirectToPreviousPageWithError(req, resp, message);
-
 			} else {
 				// create new group
 				group = new GroupEntity(groupID, groupPassword);
 				ObjectifyService.ofy().save().entity(group).now();
 				req.getSession().removeAttribute("errorMessage");
 				resp.sendRedirect("/bookmark.jsp?guestbookName=" + groupID);
-
 			}
-
 		}
 		if (act.equals("Switch Group")) {
 			// switch button was pressed
 			if (checkGroupPassword(groupID, groupPassword, groups)) {
 				req.getSession().removeAttribute("errorMessage");
 				resp.sendRedirect("/bookmark.jsp?guestbookName=" + groupID);
-
 			} else {
 				message = "invalid group and password";
 				redirectToPreviousPageWithError(req, resp, message);
 			}
-
 		}
-
 	}
 
-	private void redirectToPreviousPageWithError(HttpServletRequest req,
-			HttpServletResponse resp, String message) throws IOException,
-			UnsupportedEncodingException, ServletException {
+	private void redirectToPreviousPageWithError(HttpServletRequest req, HttpServletResponse resp, String message)
+			throws IOException, UnsupportedEncodingException, ServletException {
 
 		// redirect to previous page and display message
 		String referer = req.getHeader("Referer");
 		// redirect to prev page
 		req.getSession().setAttribute("errorMessage", message);
 		resp.sendRedirect(referer);
-
 	}
 
 	private boolean checkIfGroupExists(String groupID, List<GroupEntity> groups) {
@@ -85,8 +72,7 @@ public class CreateGroupServlet extends HttpServlet {
 		return false;
 	}
 
-	private boolean checkGroupPassword(String groupID, String password,
-			List<GroupEntity> groups) {
+	private boolean checkGroupPassword(String groupID, String password, List<GroupEntity> groups) {
 		// check if the group exists
 
 		for (GroupEntity g : groups) {
@@ -94,11 +80,9 @@ public class CreateGroupServlet extends HttpServlet {
 				// the group exits
 				// return password.equals(g.password);
 				return g.samePassword(password);
-
 			}
 		}
 		// no group
 		return false;
 	}
-
 }

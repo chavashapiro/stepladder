@@ -20,23 +20,18 @@ public class AddBookmarkServlet extends HttpServlet {
 
 	// Process the http POST of the form
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Bookmark bookmark = null;
 		GroupEntity group;
 		String groupID = req.getParameter("guestbookName");
 		String bookmarkURL = req.getParameter("bookmarkURL");
 		String bookmarkTitle = req.getParameter("bookmarkTitle");
 		try {
-			bookmark = new Bookmark(groupID, bookmarkTitle,
-					bookmarkURL);
+			bookmark = new Bookmark(groupID, bookmarkTitle, bookmarkURL);
 		} catch (InvalidURLException e) {
 			resp.sendRedirect("bookmark.jsp?message=" + URLEncoder.encode("INVALID URL", "UTF-8"));
 			return;
 		}
-
-		/*			 
-		*/
 
 		// Use Objectify to save the bookmark and now() is used to make the call
 		// synchronously as we
@@ -45,7 +40,5 @@ public class AddBookmarkServlet extends HttpServlet {
 		ObjectifyService.ofy().save().entity(bookmark).now();
 
 		resp.sendRedirect("/bookmark.jsp?guestbookName=" + groupID);
-
 	}
 }
-//
