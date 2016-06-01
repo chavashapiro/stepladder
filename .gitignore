@@ -1,1 +1,15 @@
-/target/
+/target/generated-sources/
+/target/m2e-wtp/
+/target/maven-archiver/
+/target/maven-status/
+/target/guestbook-1.0-SNAPSHOT.war
+/target/guestbook-1.0-SNAPSHOT/META-INF/
+/target/guestbook-1.0-SNAPSHOT/stylesheets/
+/target/guestbook-1.0-SNAPSHOT/bookmark.jsp
+/target/guestbook-1.0-SNAPSHOT/index.html
+/target/guestbook-1.0-SNAPSHOT/WEB-INF/lib/
+
+/target/guestbook-1.0-SNAPSHOT/WEB-INF/appengine-web.xml
+/target/guestbook-1.0-SNAPSHOT/WEB-INF/logging.properties
+/target/guestbook-1.0-SNAPSHOT/WEB-INF/web.xml
+/target/guestbook-1.0-SNAPSHOT/WEB-INF/classes/
