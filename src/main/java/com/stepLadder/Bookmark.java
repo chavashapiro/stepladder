@@ -31,6 +31,9 @@ public class Bookmark {
 				this.bookmarkURL = "http://" + bookmarkURL;
 			} else if (bookmarkURL.startsWith("http://www.")) {
 				this.bookmarkURL = bookmarkURL;
+			} else if (bookmarkURL.startsWith("https://")) {
+				this.bookmarkURL = "http://"
+						+ bookmarkURL.substring(8, bookmarkURL.length());
 			} else {
 				this.bookmarkURL = "http://www." + bookmarkURL;
 			}
@@ -48,7 +51,6 @@ public class Bookmark {
 	public Bookmark() {
 
 	}
-
 
 }
 //
