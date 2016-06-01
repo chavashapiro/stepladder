@@ -13,3 +13,4 @@
 /target/guestbook-1.0-SNAPSHOT/WEB-INF/logging.properties
 /target/guestbook-1.0-SNAPSHOT/WEB-INF/web.xml
 /target/guestbook-1.0-SNAPSHOT/WEB-INF/classes/
+/target/
