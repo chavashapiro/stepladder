@@ -1,4 +1,3 @@
-//
 package com.stepLadder;
 
 import java.util.Date;
@@ -22,18 +21,16 @@ public class Bookmark {
 	@Index
 	public Date date;
 
-	public Bookmark(String groupID, String bookmarkTitle, String bookmarkURL)
-			throws InvalidURLException {
+	public Bookmark(String groupID, String bookmarkTitle, String bookmarkURL) throws InvalidURLException {
 
-		if (bookmarkURL.contains(".com") || bookmarkURL.contains(".org")
-				|| bookmarkURL.contains(".net")) {
+		if (bookmarkURL.contains(".com") || bookmarkURL.contains(".org") || bookmarkURL.contains(".net")
+				|| bookmarkURL.contains(".edu")) {
 			if (bookmarkURL.startsWith("www.")) {
 				this.bookmarkURL = "http://" + bookmarkURL;
 			} else if (bookmarkURL.startsWith("http://www.")) {
 				this.bookmarkURL = bookmarkURL;
 			} else if (bookmarkURL.startsWith("https://")) {
-				this.bookmarkURL = "http://"
-						+ bookmarkURL.substring(8, bookmarkURL.length());
+				this.bookmarkURL = "http://" + bookmarkURL.substring(8, bookmarkURL.length());
 			} else {
 				this.bookmarkURL = "http://www." + bookmarkURL;
 			}
@@ -44,8 +41,7 @@ public class Bookmark {
 		// key
 
 		this.bookmarkTitle = bookmarkTitle;
-		this.faviconURL = "http://www.google.com/s2/favicons?domain_url="
-				+ bookmarkURL;
+		this.faviconURL = "http://www.google.com/s2/favicons?domain_url=" + bookmarkURL;
 	}
 
 	public Bookmark() {

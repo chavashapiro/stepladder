@@ -82,10 +82,10 @@ you need to add title to greetings class and then to singservlet has to getParam
 			<textarea name="bookmarkURL" rows="3" cols="60" placeholder="URL"></textarea>
 		</div>
 		<div>
-			<input type="submit" value="AddBookmark" name="button"/>
+			<input type="submit" value="Add Bookmark" name="button"/>
 		</div>
 		<div>
-			<input type="submit" value="DeleteBookmark" name="button"/>
+			<input type="submit" value="Delete Bookmark" name="button"/>
 		</div>
 		<input type="hidden" name="guestbookName"
 			value="${fn:escapeXml(guestbookName)}" />

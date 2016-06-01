@@ -25,15 +25,14 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 
 	// Process the http POST of the form
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException, ServletException {
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		Bookmark bookmark;
 		String bookmarkURL = req.getParameter("bookmarkURL");
 		String groupID = req.getParameter("guestbookName");
 		String bookmarkTitle = req.getParameter("bookmarkTitle");
 		String val = req.getParameter("button");
 		String message;
-		if (val.equals("AddBookmark")) {
+		if (val.equals("Add Bookmark")) {
 
 			try {
 				bookmark = new Bookmark(groupID, bookmarkTitle, bookmarkURL);
@@ -55,11 +54,10 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 			// data
 			// to be present.
 
-		} else if (val.equals("DeleteBookmark")) {
+		} else if (val.equals("Delete Bookmark")) {
 
 			Key<Group> group = Key.create(Group.class, groupID);
-			List<Bookmark> bookmarks = ObjectifyService.ofy().load()
-					.type(Bookmark.class).ancestor(group).list();
+			List<Bookmark> bookmarks = ObjectifyService.ofy().load().type(Bookmark.class).ancestor(group).list();
 			Iterator<Bookmark> iter = bookmarks.iterator();
 			boolean found = false;
 			while (iter.hasNext()) {
@@ -72,8 +70,10 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 			if (found == false) {
 				message = "BOOKMARK NOT FOUND";
 				this.redirectToPreviousPageWithError(req, resp, message);
-				/*resp.sendRedirect("bookmark.jsp?message="
-						+ URLEncoder.encode("BOOKMARK NOT FOUND", "UTF-8"));*/
+				/*
+				 * resp.sendRedirect("bookmark.jsp?message=" +
+				 * URLEncoder.encode("BOOKMARK NOT FOUND", "UTF-8"));
+				 */
 				return;
 			}
 		}
@@ -81,9 +81,8 @@ public class AddDeleteBookmarkServlet extends HttpServlet {
 		resp.sendRedirect("/bookmark.jsp?guestbookName=" + groupID);
 	}
 
-	private void redirectToPreviousPageWithError(HttpServletRequest req,
-			HttpServletResponse resp, String message) throws IOException,
-			UnsupportedEncodingException, ServletException {
+	private void redirectToPreviousPageWithError(HttpServletRequest req, HttpServletResponse resp, String message)
+			throws IOException, UnsupportedEncodingException, ServletException {
 
 		// redirect to previous page and display message
 		String referer = req.getHeader("Referer");
